@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:getx1/student.dart';
+import 'package:getx1/student_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,14 +12,13 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // If we have define each individual elements as observable (obs)
-  // static final Student student = Student();
-
-  // If we want to define the whole class as observable
-  static final Rx<Student> student = Student(age: 26, name: "Thomas").obs;
+  // We use Get.put() as a form of dependency injection for the Getx controller
+  // for the Student
+  static final StudentController studentController =
+      Get.put(StudentController());
 
   static const String title =
-      "Reactive state mgmt with Obx & custom model class";
+      "Extends lecture8 - seperating UI and Bussiness logic using Controller";
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +36,10 @@ class MyApp extends StatelessWidget {
               Obx(() {
                 return Text(
                   // If we have define each individual elements as observable (obs)
-                  // "Name is ${student.name.value}",
+                  // "Name is ${studentController.student.name.value}",
 
                   // If we have defined the whole class as observable (obs)
-                  "Name is ${student.value.name}",
+                  "Name is ${studentController.student.value.name}",
                   style: TextStyle(
                     fontSize: 30,
                   ),
@@ -48,16 +48,7 @@ class MyApp extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // If we have define each individual elements as observable (obs)
-                  // student.name.value = student.name.value.toUpperCase();
-
-                  // If we have defined the whole class as observable (obs)
-                  // student.value.name = student.value.name.toUpperCase();
-                  student.update((val) {
-                    if (val != null) {
-                      val.name = val.name.toUpperCase();
-                    }
-                  });
+                  studentController.studentNameToUpperCase();
                 },
                 child: Text("To Upper Case"),
               ),
