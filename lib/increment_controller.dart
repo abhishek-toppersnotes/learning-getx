@@ -7,8 +7,32 @@ class IncrementController extends GetxController {
   // and shall ONLY BE USED by GetBuilder() builder method
   int counterValue = 0;
 
-  void increment() {
+  void increment() async {
+    await Future.delayed(const Duration(seconds: 5));
     counterValue++;
     update();
+  }
+
+  void cleanUp() {
+    print("Custom cleanup function");
+  }
+
+  // Instead of using the [initState] parameter in the GetBuilder() function,
+  // you can use this to automatically perform any initialization
+  // * NOTE that this will be called in any case(with or without [initState] parameter)
+  @override
+  void onInit() {
+    print("Controller Initialized");
+    increment();
+    super.onInit();
+  }
+
+  // Instead of using the [dispose] parameter in the GetBuilder() function,
+  // you can use this to automatically perform any cleanup tasks
+  @override
+  void onClose() {
+    print("Controller Deletion happening");
+    cleanUp();
+    super.onClose();
   }
 }
