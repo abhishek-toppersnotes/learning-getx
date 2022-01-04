@@ -9,6 +9,8 @@ class IncrementController extends GetxController {
 
   void increment() {
     counterValue++;
-    update();
+
+    // If we want to update the GetBuilder() with only the specific IDs
+    update(["MY_UNIQUE_ID"]);
   }
 }
